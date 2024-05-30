@@ -13,7 +13,7 @@ export default function Home() {
         </Link>
         <div className="flex gap-2">
           <span>Already have an account?</span>
-          <Link href="/signin" className="hover:underline">
+          <Link href="/login" className="hover:underline">
             Sign in
           </Link>
         </div>

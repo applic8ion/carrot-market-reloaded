@@ -12,7 +12,7 @@ export default function getSession() {
   });
 }
 
-export async function signInSession(id: number) {
+export async function logInSession(id: number) {
   const session = await getSession();
   session.id = id;
   await session.save();

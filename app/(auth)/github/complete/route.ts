@@ -4,7 +4,7 @@ import {
   getGithubUserProfile,
 } from "@/lib/auth/github";
 import db from "@/lib/db";
-import { signInSession } from "@/lib/session";
+import { logInSession } from "@/lib/session";
 import { redirect } from "next/navigation";
 import { NextRequest } from "next/server";
 
@@ -37,7 +37,7 @@ export async function GET(request: NextRequest) {
   });
 
   if (user) {
-    await signInSession(user.id);
+    await logInSession(user.id);
     return redirect("/profile");
   }
 
@@ -65,6 +65,6 @@ export async function GET(request: NextRequest) {
     },
   });
 
-  await signInSession(newUser.id);
+  await logInSession(newUser.id);
   return redirect("/profile");
 }

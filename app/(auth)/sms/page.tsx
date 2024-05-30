@@ -10,7 +10,7 @@ const initialState = {
   error: undefined,
 };
 
-export default function SMSSignin() {
+export default function SMSLogIn() {
   const [state, dispatch] = useFormState(smsVerification, initialState);
   return (
     <div className="flex flex-col gap-10 py-8 px-6">
