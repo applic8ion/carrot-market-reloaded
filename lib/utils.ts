@@ -4,7 +4,7 @@ export function formatToTimeAgo(date: string): string {
   const now = new Date().getTime();
   const diff = Math.round((time - now) / dayInMs);
 
-  const formatter = new Intl.RelativeTimeFormat("us");
+  const formatter = new Intl.RelativeTimeFormat("en");
   return formatter.format(diff, "days");
 }
 

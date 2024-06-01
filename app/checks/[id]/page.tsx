@@ -30,8 +30,6 @@ async function getCheck(id: number) {
     },
   });
 
-  console.log(check);
-
   return check;
 }
 
@@ -55,10 +53,18 @@ export default async function CheckDetail({
   return (
     <div>
       <div className="relative aspect-square">
-        <Image fill src={check.photo} alt={check.title} />
+        <Image
+          fill
+          className="object-cover"
+          src={check.photo}
+          alt={check.title}
+          style={{
+            objectFit: "cover",
+          }}
+        />
       </div>
       <div className="p-5 flex items-center gap-3 border-b border-neutral-700">
-        <div className="size-10 rounded-full">
+        <div className="size-10 overflow-hidden rounded-full">
           {check.user.avatar !== null ? (
             <Image
               src={check.user.avatar}

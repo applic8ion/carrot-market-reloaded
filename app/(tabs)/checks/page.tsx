@@ -1,7 +1,8 @@
-import ListCheck from "@/components/list-check";
+import CheckList from "@/components/check-list";
 import db from "@/lib/db";
+import { Prisma } from "@prisma/client";
 
-async function getCheckes() {
+async function getInitialCheckes() {
   const checks = await db.check.findMany({
     select: {
       title: true,
@@ -10,17 +11,21 @@ async function getCheckes() {
       photo: true,
       id: true,
     },
+    take: 1,
+    orderBy: {
+      created_at: "desc",
+    },
   });
   return checks;
 }
 
+export type InitialChecks = Prisma.PromiseReturnType<typeof getInitialCheckes>;
+
 export default async function Check() {
-  const checks = await getCheckes();
+  const initialChecks = await getInitialCheckes();
   return (
     <div className="p-5 flex flex-col gap-5">
-      {checks.map((check) => (
-        <ListCheck key={check.id} {...check} />
-      ))}
+      <CheckList initialChecks={initialChecks} />
     </div>
   );
 }
