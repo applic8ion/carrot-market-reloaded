@@ -53,15 +53,17 @@ export default async function CheckDetail({
   return (
     <div>
       <div className="relative aspect-square">
-        <Image
-          fill
-          className="object-cover"
-          src={check.photo}
-          alt={check.title}
-          style={{
-            objectFit: "cover",
-          }}
-        />
+        <Link href={check.photo} target="_blank" rel="noopener noreferrer">
+          <Image
+            fill
+            className="object-cover"
+            src={`${check.photo}`}
+            alt={check.title}
+            style={{
+              objectFit: "cover",
+            }}
+          />
+        </Link>
       </div>
       <div className="p-5 flex items-center gap-3 border-b border-neutral-700">
         <div className="size-10 overflow-hidden rounded-full">
@@ -86,7 +88,7 @@ export default async function CheckDetail({
       </div>
       <div className="fixed w-full bottom-0 left-0 p-5 pb-10 bg-neutral-800 flex justify-between items-center">
         <span className="font-semibold text-xl">
-          $ {formatToDollar(check.amount)}
+          {formatToDollar(check.amount)}
         </span>
         {isOwner && (
           <button className="bg-red-500 px-5 py-2.5 rounded-md text-white font-semibold">

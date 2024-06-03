@@ -36,7 +36,7 @@ export default function CheckList({ initialChecks }: CheckListProps) {
           }
           setIsLoading(false);
         }
-        console.log(entries[0].isIntersecting);
+        // console.log(entries[0].isIntersecting);
       },
       {
         threshold: 1.0,

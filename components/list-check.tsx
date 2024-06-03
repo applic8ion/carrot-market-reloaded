@@ -20,16 +20,20 @@ export default function ListCheck({
   return (
     <Link href={`/checks/${id}`} className="flex gap-5">
       <div className="relative size-28 rounded-md overflow-hidden">
-        <Image fill className="object-cover" src={photo} alt={title} />
+        <Image
+          fill
+          sizes="100vw"
+          className="object-cover"
+          src={`${photo}`}
+          alt={title}
+        />
       </div>
       <div className="flex flex-col gap-1 *:text-white">
         <span className="text-lg">{title}</span>
         <span className="text-sm text-neutral-500">
           {formatToTimeAgo(created_at.toString())}
         </span>
-        <span className="text-lg font-semibold">
-          $ {formatToDollar(amount)}
-        </span>
+        <span className="text-lg font-semibold">{formatToDollar(amount)}</span>
       </div>
     </Link>
   );
