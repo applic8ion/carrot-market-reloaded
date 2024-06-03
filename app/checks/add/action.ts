@@ -6,15 +6,9 @@ import db from "@/lib/db";
 import getSession from "@/lib/session";
 import { redirect } from "next/navigation";
 import { getNow } from "@/lib/utils";
+import { checkSchema } from "./schema";
 
-const checkSchema = z.object({
-  photo: z.string({ required_error: "Photo is required" }),
-  title: z.string({ required_error: "Title is required" }),
-  description: z.string(),
-  amount: z.coerce.number({ required_error: "Amount is required" }),
-});
-
-export async function uploadCheck(_: any, formData: FormData) {
+export async function uploadCheck(formData: FormData) {
   const data = {
     photo: formData.get("photo"),
     title: formData.get("title"),

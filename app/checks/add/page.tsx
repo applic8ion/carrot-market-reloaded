@@ -10,12 +10,24 @@ import {
   getUploadUrl,
   uploadCheck,
 } from "./action";
-import { useFormState } from "react-dom";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { CheckType, checkSchema } from "./schema";
+import { getNow } from "@/lib/utils";
 
 export default function AddCheck() {
   const [preview, setPreview] = useState("");
   const [uploadUrl, setUploadUrl] = useState("");
-  const [photoId, setPhotoId] = useState("");
+  const [file, setFile] = useState<File | null>(null);
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    setError,
+    formState: { errors },
+  } = useForm<CheckType>({
+    resolver: zodResolver(checkSchema),
+  });
   const onImageChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const {
       target: { files },
@@ -39,26 +51,33 @@ export default function AddCheck() {
 
     const url = URL.createObjectURL(file);
     setPreview(url);
+    setFile(file);
 
     if (await getIsCloudflare()) {
       const { success, result } = await getUploadUrl();
       if (success) {
         const { id, uploadURL } = result;
         setUploadUrl(uploadURL);
-        setPhotoId(id);
+        const cloudflarePhotoUrl = getCloudflarePhotoUrl();
+        setValue("photo", `${cloudflarePhotoUrl}/${id}`);
       }
+    } else {
+      setValue("photo", `${getNow()}_${file.name}`);
     }
   };
 
-  const interceptAction = async (_: any, formData: FormData) => {
+  const onSubmit = handleSubmit(async (data: CheckType) => {
     const isCloudflare = await getIsCloudflare();
-    if (isCloudflare) {
-      console.log(isCloudflare);
-      const file = formData.get("photo");
-      if (!file) {
-        return;
-      }
+    if (!file) {
+      return;
+    }
 
+    const formData = new FormData();
+    formData.append("title", data.title);
+    formData.append("amount", data.amount + "");
+    formData.append("description", data.description);
+
+    if (isCloudflare) {
       // upload image to cloudflare
       const cloudflareForm = new FormData();
       cloudflareForm.append("file", file);
@@ -71,21 +90,25 @@ export default function AddCheck() {
         return;
       }
 
-      const cloudflarePhotoUrl = await getCloudflarePhotoUrl();
-      const photoUrl = `${cloudflarePhotoUrl}/${photoId}`;
-      // replace `photo` in formData
-      formData.set("photo", photoUrl);
+      formData.append("photo", data.photo);
+    } else {
+      formData.append("photo", file);
     }
 
     // call uploadCheck()
-    return uploadCheck(_, formData);
-  };
+    const errors = await uploadCheck(formData);
+    if (errors) {
+      // setError("")
+    }
+  });
 
-  const [state, action] = useFormState(interceptAction, null);
+  const onValid = async () => {
+    await onSubmit();
+  };
 
   return (
     <div>
-      <form action={action} className="p-5 flex flex-col gap-5">
+      <form action={onValid} className="p-5 flex flex-col gap-5">
         <label
           htmlFor="photo"
           className="border-2 aspect-square flex items-center justify-center flex-col text-neutral-300 border-neutral-300 rounded-md border-dashed cursor-pointer bg-center bg-cover"
@@ -98,7 +121,7 @@ export default function AddCheck() {
               <PhotoIcon className="w-20" />
               <div className="text-neutral-400 text-sm">
                 Add Photo
-                {state?.fieldErrors.photo}
+                {errors.photo?.message}
               </div>
             </>
           )}
@@ -112,25 +135,25 @@ export default function AddCheck() {
           className="hidden"
         />
         <Input
-          name="title"
           required
           placeholder="Title"
           type="text"
-          errors={state?.fieldErrors.title}
+          {...register("title")}
+          errors={[errors.title?.message ?? ""]}
         />
         <Input
-          name="amount"
           required
           placeholder="Amount"
           type="number"
           step="0.01"
-          errors={state?.fieldErrors.amount}
+          {...register("amount")}
+          errors={[errors.amount?.message ?? ""]}
         />
         <Input
-          name="description"
           placeholder="Description"
           type="text"
-          errors={state?.fieldErrors.description}
+          {...register("description")}
+          errors={[errors.description?.message ?? ""]}
         />
         <Button text="Confirm" />
       </form>
