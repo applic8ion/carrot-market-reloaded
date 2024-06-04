@@ -8,7 +8,7 @@ export function formatToTimeAgo(date: string): string {
   return formatter.format(diff, "days");
 }
 
-export function formatToDollar(amount: number): string {
+export function formatToUsd(amount: number): string {
   return amount.toLocaleString("en-US", {
     style: "currency",
     currency: "USD",

@@ -131,7 +131,7 @@ export default function AddCheck() {
           type="file"
           id="photo"
           name="photo"
-          accept="image/*"
+          accept="image/*, application/pdf"
           className="hidden"
         />
         <Input

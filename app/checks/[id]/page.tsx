@@ -1,6 +1,6 @@
 import db from "@/lib/db";
 import getSession from "@/lib/session";
-import { formatToDollar } from "@/lib/utils";
+import { formatToUsd } from "@/lib/utils";
 import { UserIcon } from "@heroicons/react/24/solid";
 import Image from "next/image";
 import Link from "next/link";
@@ -39,6 +39,7 @@ export default async function CheckDetail({
   params: { id: string };
 }) {
   const id = Number(params.id);
+
   if (isNaN(id)) {
     return notFound();
   }
@@ -88,7 +89,7 @@ export default async function CheckDetail({
       </div>
       <div className="fixed w-full bottom-0 left-0 p-5 pb-10 bg-neutral-800 flex justify-between items-center">
         <span className="font-semibold text-xl">
-          {formatToDollar(check.amount)}
+          {formatToUsd(check.amount)}
         </span>
         {isOwner && (
           <button className="bg-red-500 px-5 py-2.5 rounded-md text-white font-semibold">

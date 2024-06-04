@@ -1,9 +1,9 @@
 "use client";
 
-import { InitialChecks } from "@/app/(tabs)/checks/page";
+import { InitialChecks } from "@/app/(tabs)/home-checks/page";
 import ListCheck from "./list-check";
 import { useEffect, useRef, useState } from "react";
-import { getMoreChecks } from "@/app/(tabs)/checks/actions";
+import { getMoreChecks } from "@/app/(tabs)/home-checks/actions";
 
 interface CheckListProps {
   initialChecks: InitialChecks;

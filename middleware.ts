@@ -23,7 +23,7 @@ export async function middleware(request: NextRequest) {
     }
   } else {
     if (isPublicUrl) {
-      return NextResponse.redirect(new URL("/checks", request.url));
+      return NextResponse.redirect(new URL("/home-checks", request.url));
     }
   }
 }

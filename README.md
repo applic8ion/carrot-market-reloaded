@@ -24,6 +24,24 @@ npx prisma migrate dev
 npx prisma studio
 ```
 
+# Required Variables in .env
+
+- DATABASE_URL
+
+- COOKIE_PASSWORD
+
+- GITHUB_CLIENT_SECRET
+
+- GITHUB_CLIENT_ID
+
+- IS_CLOUDFLARE
+
+- CLOUDFLARE_ACCOUNT_ID
+
+- CLOUDFLARE_API_KEY
+
+- CLOUDFLARE_PHOTO_URL
+
 # References
 
 [tailwindcss-forms][tailwindcss-forms]

@@ -1,4 +1,4 @@
-import { formatToDollar, formatToTimeAgo } from "@/lib/utils";
+import { formatToUsd, formatToTimeAgo } from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -33,7 +33,7 @@ export default function ListCheck({
         <span className="text-sm text-neutral-500">
           {formatToTimeAgo(created_at.toString())}
         </span>
-        <span className="text-lg font-semibold">{formatToDollar(amount)}</span>
+        <span className="text-lg font-semibold">{formatToUsd(amount)}</span>
       </div>
     </Link>
   );
